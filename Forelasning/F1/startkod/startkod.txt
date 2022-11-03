@@ -1,0 +1,1 @@
+I denna katalog finns statkoden för F1.
