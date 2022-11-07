@@ -12,6 +12,7 @@ class GameData  {
     ];
 
     createImgElements() {
+        //Skapa nya element
 
         let rndValue = 0;
         let mainRef = document.querySelector('main');
@@ -39,7 +40,7 @@ class GameData  {
     }
 
     removeImgElements() {
-
+        //Ta bort element
         let imgRefs = document.querySelectorAll('main img');
         console.log( imgRefs );
 
