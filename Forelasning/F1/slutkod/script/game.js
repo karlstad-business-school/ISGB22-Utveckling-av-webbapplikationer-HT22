@@ -13,9 +13,39 @@ class GameData  {
 
     createImgElements() {
 
+        let rndValue = 0;
+        let mainRef = document.querySelector('main');
+        let imgRef = null;
+
+        for(let i = 0; i <= 5; i++) {
+
+            rndValue = Math.floor( Math.random() * 6);
+            console.log( rndValue );
+
+            imgRef = document.createElement('img');
+
+            imgRef.setAttribute('src', this.imgRefs[rndValue]);
+            imgRef.setAttribute('alt', 'Tärning ' + (rndValue + 1));
+
+            imgRef.style.width = '10%';
+            imgRef.style.height = '10%';
+
+            mainRef.appendChild(imgRef);
+
+
+        }
+
+
     }
 
     removeImgElements() {
+
+        let imgRefs = document.querySelectorAll('main img');
+        console.log( imgRefs );
+
+        for(let i = 0; i < imgRefs.length; i++) {
+            imgRefs.item(i).remove();
+        }
         
     }
 
@@ -23,8 +53,21 @@ class GameData  {
 
 window.addEventListener('load', function() {
 
+    console.log( Date.now() );
+
 });
 
 window.addEventListener('DOMContentLoaded', function() {
+
+    console.log( Date.now() );
+
+    document.addEventListener('keydown', function(e ) {
+
+        if(e.key === 'd' || e.key === 'D') {
+            let oGameData = new GameData();
+            oGameData.removeImgElements();
+            oGameData.createImgElements(); 
+        }
+    });
 
 });
