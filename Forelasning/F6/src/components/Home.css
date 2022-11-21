@@ -1,0 +1,10 @@
+.home{
+	background-color: #ffffcc;
+	width: 800px;
+	margin: 0 auto;
+	padding: 12px;
+}
+
+.home > p{
+	font-size: 18px;
+}
