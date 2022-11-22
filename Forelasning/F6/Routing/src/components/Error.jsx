@@ -8,9 +8,9 @@ class Navbar extends Component {
     render() {
         return (
         
-        <div className="home">
+            <div className="home">
            
-       </div>
+            </div>
         
         );
     }
