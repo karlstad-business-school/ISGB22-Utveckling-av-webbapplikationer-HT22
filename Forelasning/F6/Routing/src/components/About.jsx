@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 
-class Navbar extends Component {
+class About extends Component {
 
     render() {
         return (
@@ -15,4 +15,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default About;
