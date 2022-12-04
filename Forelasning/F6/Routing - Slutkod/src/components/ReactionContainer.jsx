@@ -15,6 +15,8 @@ class ReactionContainer extends Component {
             pokemonList: Array()
         }
 
+
+
         console.log(this.props.params.range);
         this.setDummy();
     }
@@ -65,9 +67,11 @@ class ReactionContainer extends Component {
 
         let search = pokemons.filter(p => p.name.toLowerCase().includes(text));
 
-        this.setState({ 
-            dummyList: search
-        });
+        this.setState(
+            { 
+                dummyList: search
+            }
+        );
     }
 
     render() {
