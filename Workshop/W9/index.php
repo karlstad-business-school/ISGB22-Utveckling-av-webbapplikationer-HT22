@@ -19,8 +19,13 @@
             $username = $_POST["txtUsername"];
             $password = $_POST["txtPassword"];
 
-            $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password ."';";
+            $sql = "SELECT * FROM users WHERE username=:user AND password=:pass";
+            
+            //$stmt->bindValue(":losen", $_POST["losen1"]);   
             $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(":user", $username);
+            $stmt->bindValue(":pass", $password);
+            
             $stmt->execute();
 
             if($stmt->rowCount()>0) {
