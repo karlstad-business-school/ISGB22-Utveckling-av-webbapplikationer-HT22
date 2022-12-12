@@ -9,9 +9,9 @@
         
         <?php
             try {
-                $dataSourceName = "mysql:" . "host=localhost;" . "dbname=car;" . "charset=utf8";
-                $userName = "isgb22";
-                $passWord = "isgb22";
+                $dataSourceName = "mysql:" . "host=localhost;" . "dbname=bilar;" . "charset=utf8";
+                $userName = "root";
+                $passWord = "";
                 $dbhsOptions = array(
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
