@@ -1,8 +1,57 @@
+<?php
 
+    $titel = "Logga in";
+    $inloggad = "false";
+
+    if(isset($_POST['btnLogin'])) {
+        
+        try {
+            $dataSourceName = "mysql:" . "host=localhost;" . "dbname=bilar;" . "charset=utf8";
+            $userName = "root";
+            $passWord = "";
+            $dbhsOptions = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            );
+
+            $dbh = new PDO($dataSourceName, $userName, $passWord, $dbhsOptions);
+
+            $username = $_POST["txtUsername"];
+            $password = $_POST["txtPassword"];
+
+            $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password ."';";
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+
+            if($stmt->rowCount()>0) {
+                $titel="S U P E R  U S E R";
+                $inloggad="true";
+            }
+            //echo("<p>" . $stmt->rowCount() . "</p>");
+
+        }
+        catch(PDOException $error){
+            echo("Det gick åt hvete!");
+        }
+
+        
+
+
+
+
+
+    }
+
+
+
+  
+
+
+?>
 <!DOCTYPE html>
 <html lang="sv">
     <head>
-        <title>B A N A N</title>
+        <title><?php echo($titel); ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -21,10 +70,12 @@
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="loginmodal-container modal-content">
-                    <h1>Logga in på ditt konto</h1><br/>                 
-                    <input type="text" ID="txtUsername" placeholder="Användarnamn">
-                    <input id="txtPassword" placeholder="Lösenord" type="password" />
-                    <input type="button" ID="btnLoggaIn" value="Logga in" class="btn btn-primary w-100">                             
+                    <form method="POST">
+                        <h1>Logga in på ditt konto</h1><br/>                 
+                        <input type="text" ID="txtUsername" name="txtUsername" placeholder="Användarnamn">
+                        <input id="txtPassword" name="txtPassword" placeholder="Lösenord" type="password" />
+                        <input type="submit" ID="btnLoggaIn" name="btnLogin" value="Logga in" class="btn btn-primary w-100">                             
+                    </form>
                 </div>
             </div>
 		</div>
@@ -52,10 +103,14 @@
                    
                 </div>
             </nav>
-        </header>
-
-
-     
+        </header>  
     </div>
+    <?php
+        if($inloggad!="true") {
+            echo("<script>");
+            echo("$('#login-modal').modal('show');");
+            echo("</script>");
+        }
+    ?>
     </body>
 </html>
