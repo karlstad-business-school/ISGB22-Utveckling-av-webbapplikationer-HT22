@@ -2,7 +2,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>PHP F9 - Gömda fält</title>
+        <title>PHP F10 - Gömda fält</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -18,7 +18,7 @@
 
     <body class="container p-2">
         <header class="jumbotron text-center">
-            <h1>PHP F9 - Först till 100 med gömda fält</h1>
+            <h1>PHP F10 - Först till 100 med gömda fält</h1>
         </header>
 
         <main>    
@@ -31,7 +31,19 @@
 
                 if( isset( $_POST["skicka"] ) ) {
 
-                    //Här skriver du din kod!
+                    $summa = $_POST["summa"];
+                    $antal = $_POST["antal"];
+
+                    for($i=1;$i<6; $i++) {
+                        $slumptal = rand(1,6);
+                        echo(IMG . (26+$slumptal) . "/Die" . $slumptal . ".svg' alt='' />");
+    
+                        $summa = $summa + $slumptal;
+                    }
+
+                    $antal++;
+
+                    echo("<p>Antal kast: " . $antal . "<br>Summa: " . $summa . "</p>");
 
                 }
 

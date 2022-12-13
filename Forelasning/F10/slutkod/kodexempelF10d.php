@@ -4,6 +4,16 @@
     $stringToEcho = "";
 
     if( isset( $_POST["skicka"] ) ) {
+        session_start();
+
+        if(isset($_SESSION["antal"])) {
+            $antal=$_SESSION["antal"];
+        }
+
+        $antal++;
+        $_SESSION["antal"] = $antal;
+
+        $stringToEcho = "Du har tryck $antal gånger!";
 
     }
 
@@ -35,7 +45,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>PHP F9 - Sessioner</title>
+        <title>PHP F10 - Sessioner</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -51,7 +61,7 @@
 
     <body class="container p-2">
         <header class="jumbotron text-center">
-            <h1>PHP F9 - äkna antalet klick på knappen "Skicka"!</h1>
+            <h1>PHP F10 - Räkna antalet klick på knappen "Skicka"!</h1>
         </header>
 
         <main>    

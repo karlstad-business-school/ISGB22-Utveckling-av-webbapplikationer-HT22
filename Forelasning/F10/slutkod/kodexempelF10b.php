@@ -2,7 +2,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>PHP F9 - Modifierad url</title>
+        <title>PHP F10 - Modifierad url</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -31,7 +31,20 @@
 
                 if( isset( $_GET["skicka"] ) ) {
 
-                    //Här skriver du din kod!
+                    $summa = $_GET["summa"];
+                    $antal = $_GET["antal"];
+
+                    for($i=1;$i<6; $i++) {
+                        $slumptal = rand(1,6);
+                        echo(IMG . (26+$slumptal) . "/Die" . $slumptal . ".svg' alt='' />");
+    
+                        $summa = $summa + $slumptal;
+                    }
+                    
+                    $antal++;
+
+                    echo("<p>Antal kast: " . $antal . "<br>Summa: " . $summa . "</p>");
+
 
                 }
 
