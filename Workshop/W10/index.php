@@ -53,7 +53,38 @@
 
             while($row = $stmt->fetch() ) {
                 $html=$html . "<tr><td>" . $row["fabrikat"] . "</td><td>" . $row["modell"] . "</td>";
-                $html=$html . "<td>" . $row["farg"] . "</td></tr>";
+                $html=$html . "<td style='background-color: " . $row["farg"] . "'>" . $row["farg"] . "</td>";
+                $html=$html . "<td><a href='" . $_SERVER["PHP_SELF"] . "?cmd=delete&id=" . $row["id"] . "'>ta bort</a></td></tr>";
+            }
+
+            if($inloggad=="true"){
+                if(isset($_POST["addcar"])) {
+                    //Validering...
+                    
+                    //Kolla att alla invärden är satta
+
+                    //Kolla vilkor... Fabrik ska vara 3 till 20 tecken
+
+                    //Kolla modell... 
+                    $sql="INSERT INTO cars(fabrikat, modell, farg) VALUES(:fabrik,:modell,:farg);";
+
+                    $stmt=null;
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindValue(":fabrik", $_POST["txtfabrikat"]);
+                    $stmt->bindValue(":modell", $_POST["txtmodell"]);
+                    $stmt->bindValue(":farg", $_POST["txtfarg"]);
+                    $stmt->execute();
+
+                }
+
+                if(isset($_GET["cmd"])) {
+                    if($_GET["cmd"]=="delete") {
+                        $sql = "DELETE FROM cars WHERE id=:id";
+                        $stmt = $dbh->prepare($sql);
+                        $stmt->bindValue(":id", $_GET["id"]);
+                        $stmt->execute();
+                    }
+                }
             }
            
 
@@ -138,12 +169,21 @@
                         <table class="table">
                             <tr>
                                 <th>Fabrik</th>
-                                <th>Regnr</th>
+                                <th>Modell</th>
                                 <th>Färg</th>
+                                <th>&nbsp;</th>
                             </tr>
                             <?php echo($html); ?>
 
                         </table>
+
+                        <form method="POST">
+                            Fabrikat: <input type="text" name="txtfabrikat"><br>
+                            Modell: <input type="text" name="txtmodell"><br>
+                            Färg: <input type="color" name="txtfarg"><br>
+                            <input type="submit" name="addcar" value="Lägg till bil">
+                        </form>
+
                     <?php
                 }
             ?>
