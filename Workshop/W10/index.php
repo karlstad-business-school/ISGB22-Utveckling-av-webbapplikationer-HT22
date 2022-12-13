@@ -137,9 +137,9 @@
                     ?>
                         <table class="table">
                             <tr>
-                                <td>Fabrik</td>
-                                <td>Regnr</td>
-                                <td>Färg</td>
+                                <th>Fabrik</th>
+                                <th>Regnr</th>
+                                <th>Färg</th>
                             </tr>
                             <?php echo($html); ?>
 
