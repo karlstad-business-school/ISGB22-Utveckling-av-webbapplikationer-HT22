@@ -1,24 +1,34 @@
 <?php
 
+    session_start();
+
     $titel = "Logga in";
-    $inloggad = "false";
+    $html="";
+    if(isset($_SESSION["inloggad"])) {
+        $inloggad = "true";
+    }
+    else {
+        $inloggad = "false";
+    }
+     try {
 
-    if(isset($_POST['btnLogin'])) {
+        $dataSourceName = "mysql:" . "host=localhost;" . "dbname=bilar;" . "charset=utf8";
+        $userName = "root";
+        $passWord = "";
+        $dbhsOptions = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        );
+
+        $dbh = new PDO($dataSourceName, $userName, $passWord, $dbhsOptions);
+
         
-        try {
-            $dataSourceName = "mysql:" . "host=localhost;" . "dbname=bilar;" . "charset=utf8";
-            $userName = "root";
-            $passWord = "";
-            $dbhsOptions = array(
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-            );
 
-            $dbh = new PDO($dataSourceName, $userName, $passWord, $dbhsOptions);
+        if(isset($_POST['btnLogin'])) {
 
             $username = $_POST["txtUsername"];
             $password = $_POST["txtPassword"];
-
+        
             $sql = "SELECT * FROM users WHERE username=:user AND password=:pass";
                     
             $stmt = $dbh->prepare($sql);
@@ -30,6 +40,20 @@
             if($stmt->rowCount()>0) {
                 $titel="S U P E R  U S E R";
                 $inloggad="true";
+                //setcookie("inloggad","true",time()+3600);
+                $_SESSION["inloggad"]="true";
+                $_SESSION["user"] = $username;
+            }
+        }
+
+            $sql="SELECT * FROM cars ORDER BY farg ASC";
+            $stmt=null;
+            $stmt = $dbh->prepare($sql);
+            $stmt->execute();
+
+            while($row = $stmt->fetch() ) {
+                $html=$html . "<tr><td>" . $row["fabrikat"] . "</td><td>" . $row["modell"] . "</td>";
+                $html=$html . "<td>" . $row["farg"] . "</td></tr>";
             }
            
 
@@ -37,7 +61,13 @@
         catch(PDOException $error){
             echo("Det gick åt hvete!");
         }
-    }
+        finally {
+            $stmt=null;
+            $dbh=null;
+        }
+
+
+    
 
 
 
@@ -101,6 +131,24 @@
                 </div>
             </nav>
         </header>  
+        <main>
+            <?php
+                if($inloggad=="true") {
+                    ?>
+                        <table class="table">
+                            <tr>
+                                <td>Fabrik</td>
+                                <td>Regnr</td>
+                                <td>Färg</td>
+                            </tr>
+                            <?php echo($html); ?>
+
+                        </table>
+                    <?php
+                }
+            ?>
+
+        </main>
     </div>
     <?php
         if($inloggad!="true") {
