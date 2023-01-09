@@ -31,12 +31,74 @@
             <h1>Skapa användare</h1>
         </header>
 
-        <main>    
+        <main>   
+            <?php
+                if( isset( $_POST['skicka'])){
 
-      
+                    //Validera inskickade data.... Gör på worskshop:
+                    // 0. Kontrollera dublett av epost
+                    // 1. Kontrollera att epost matchar mönster för epost
+                    // 2. Kontrollera lösenord är samma i båda rutorna
+
+                    //personnummer? 12tkn?
+                    $personnummer = $_POST["persnr"];
+                    $pers_first = substr($personnummer,0,8);
+                    $pers_last = substr($personnummer, -4);
+
+                    try {
+
+                        if(!is_numeric($pers_first) || !is_numeric($pers_last)) {
+                            throw new Exception("Fyll i personnummer rätt!");
+                        }
+
+                        $dbh = dbConnect();
+
+                        $ssql = "INSERT INTO tblusers(epost, losen, personnummer) VALUES(:epost, :losen, :pers);";
+
+                        $stmt = $dbh->prepare($ssql);
+                        $stmt->bindValue(":epost", $_POST["epost"]);
+                        $stmt->bindValue(":losen", $_POST["losen1"]);
+                        $stmt->bindValue(":pers", $_POST["persnr"]);
+
+                        $stmt->execute();
+
+                    }
+                    catch(Exception $ex) {
+                        echo("<h1>" . $ex->getMessage() . "</h1>");
+                    }
+
+
+
+
+
+
+                }
             
 
+            ?>
+        
 
+
+            <form method="POST" action='<?php echo($_SERVER["PHP_SELF"]) ?>'>
+                <div class="form-group">
+                    <label for="epost">E-post: </label>
+                    <input type="email" id="epost" name="epost" required>
+                </div>
+                <div class="form-group">
+                    <label for="persnr">Personnumer (YYYYMMDD-XXXX): </label>
+                    <input type="text" id="persnr" name="persnr" required>
+                </div>
+                <div class="form-group">
+                    <label for="losen1">Lösenord: </label>
+                    <input type="password" id="losen1" name="losen1" required>
+                </div>
+                <div class="form-group">
+                    <label for="losen2">Upprepa Lösenord: </label>
+                    <input type="password" id="losen2" name="losen2" required>
+                </div>
+                <input type="submit" name="skicka" value="skicka" class="btn btn-danger">    
+
+            </form>
         </main>
 
     </body>
