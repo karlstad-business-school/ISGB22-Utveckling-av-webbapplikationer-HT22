@@ -36,6 +36,9 @@
                 if( isset( $_POST['skicka'])){
 
                     //Validera inskickade data.... Gör på worskshop:
+
+            
+
                     // 0. Kontrollera dublett av epost
                     // 1. Kontrollera att epost matchar mönster för epost
                     // 2. Kontrollera lösenord är samma i båda rutorna
@@ -46,6 +49,27 @@
                     $pers_last = substr($personnummer, -4);
 
                     try {
+
+                        if(!filter_var($_POST["epost"], FILTER_VALIDATE_EMAIL)) {
+                            throw new Exception("Ogiltig epost");
+                        }
+
+                        if($_POST["losen1"] != $_POST["losen2"]) {
+                            throw new Exception("Ej samma lösenord");
+                        }
+
+
+                        $dbh = dbConnect();
+
+                        $ssql = "SELECT * FROM tblusers WHERE epost=:epost";
+                        $stmt=$dbh->prepare($ssql);
+                        $stmt->bindValue(":epost", $_POST["epost"]);
+                        $stmt->execute();
+                        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+                        if(count($data)>0) {
+                            throw new Exception("Din epost finns redan!");
+                        }
 
                         if(!is_numeric($pers_first) || !is_numeric($pers_last)) {
                             throw new Exception("Fyll i personnummer rätt!");
@@ -69,9 +93,22 @@
 
                         $stmt->execute();
 
+                        $lastID = $dbh->lastInsertId();
+
+                        session_start();
+                        $_SESSION["inloggad"]="Japp!";
+                        $_SESSION["id"]=$lastID;
+
+
                     }
                     catch(Exception $ex) {
                         echo("<h1>" . $ex->getMessage() . "</h1>");
+                    }
+                    finally {
+                        $dbh=null;
+                        $stmt=null;
+                        $data=null;
+
                     }
 
 
