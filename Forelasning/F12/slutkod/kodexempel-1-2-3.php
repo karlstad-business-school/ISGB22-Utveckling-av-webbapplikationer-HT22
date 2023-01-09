@@ -55,10 +55,17 @@
 
                         $ssql = "INSERT INTO tblusers(epost, losen, personnummer) VALUES(:epost, :losen, :pers);";
 
+
+                        $losen = $_POST["losen1"];
+                        $nyckel = "valfristrang1234";
+                        $hashad_losen = hash("SHA256",$losen);
+
+                        $krypterat_personnummer = openssl_encrypt($personnummer, "AES-128-ECB", $nyckel);
+
                         $stmt = $dbh->prepare($ssql);
                         $stmt->bindValue(":epost", $_POST["epost"]);
-                        $stmt->bindValue(":losen", $_POST["losen1"]);
-                        $stmt->bindValue(":pers", $_POST["persnr"]);
+                        $stmt->bindValue(":losen", $hashad_losen);
+                        $stmt->bindValue(":pers", $krypterat_personnummer);
 
                         $stmt->execute();
 
